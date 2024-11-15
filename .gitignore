@@ -2,3 +2,4 @@
 ./go-llama.cpp
 go-llama.cpp/*
 go-llama.cpp
+*.log
