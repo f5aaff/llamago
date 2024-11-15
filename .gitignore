@@ -1,4 +1,5 @@
 *.json
+./config.json
 ./go-llama.cpp
 go-llama.cpp/*
 go-llama.cpp
