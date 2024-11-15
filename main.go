@@ -86,7 +86,7 @@ func main() {
 	}
 	// Load the model
 	modelPath := cfg.ModelPath
-	model, err := llama.New(modelPath, llama.SetContext(512))
+	model, err := llama.New(modelPath, llama.SetContext(2000))
 	if err != nil {
 		log.Fatalf("Failed to load model: %v", err)
 	}
