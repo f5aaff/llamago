@@ -49,7 +49,7 @@ func takeInput(history *[]string) error {
 
 func genResponse(history *[]string, model *llama.LLama) error {
 	prompt := strings.Join(*history, "\n") + "\n:Assistant:"
-	resp, err := model.Predict(prompt, llama.SetTemperature(0.7), llama.SetTopK(50), llama.SetTokens(200),llama.SetStopWords("User:","\n"))
+	resp, err := model.Predict(prompt, llama.SetTemperature(0.7), llama.SetTopK(50), llama.SetTokens(2000),llama.SetStopWords("User:"))
 	if err != nil {
 		return err
 	}
