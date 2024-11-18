@@ -1,0 +1,4 @@
+{
+    "model_path" : "/path/to/your/model.gguf",
+    "init_prompt" : "you are the Assistant, your job is to answer all questions you are asked by the User."
+}

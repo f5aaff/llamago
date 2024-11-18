@@ -1,6 +1,6 @@
-*.json
-./config.json
+config.json
 ./go-llama.cpp
 go-llama.cpp/*
 go-llama.cpp
 *.log
+go-LLM
