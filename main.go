@@ -15,6 +15,8 @@ import (
 type Config struct {
 	ModelPath  string `json:"model_path"`
 	InitPrompt string `json:"init_prompt"`
+	MaxTokens int `json:"max_tokens"`
+	ModelContextLimit int `json:"model_context_limit"`
 }
 
 func load_config(cfg *Config) error {
@@ -47,9 +49,9 @@ func takeInput(history *[]string) error {
 	return nil
 }
 
-func genResponse(history *[]string, model *llama.LLama) error {
+func genResponse(history *[]string, model *llama.LLama,cfg Config) error {
 	prompt := strings.Join(*history, "\n") + "\n:Assistant:"
-	resp, err := model.Predict(prompt, llama.SetTemperature(0.7), llama.SetTopK(50), llama.SetTokens(2000),llama.SetStopWords("User:"))
+	resp, err := model.Predict(prompt, llama.SetTemperature(0.7), llama.SetTopK(50), llama.SetTokens(cfg.MaxTokens),llama.SetStopWords("User:"))
 	if err != nil {
 		return err
 	}
@@ -59,7 +61,7 @@ func genResponse(history *[]string, model *llama.LLama) error {
 	return nil
 }
 
-func initConversation(history *[]string, model *llama.LLama) error {
+func initConversation(history *[]string, model *llama.LLama,cfg Config) error {
 	println("starting conversation...")
 	for {
 		err := takeInput(history)
@@ -67,7 +69,7 @@ func initConversation(history *[]string, model *llama.LLama) error {
 			println("TAKEINPUT ERROR")
 			return err
 		}
-		err = genResponse(history, model)
+		err = genResponse(history, model,cfg)
 		if err != nil {
 			println("GENRESPONSE ERROR")
 			return err
@@ -86,12 +88,12 @@ func main() {
 	}
 	// Load the model
 	modelPath := cfg.ModelPath
-	model, err := llama.New(modelPath, llama.SetContext(2000))
+	model, err := llama.New(modelPath, llama.SetContext(cfg.ModelContextLimit))
 	if err != nil {
 		log.Fatalf("Failed to load model: %v", err)
 	}
 	history := make([]string, 1)
-	err = initConversation(&history, model)
+	err = initConversation(&history, model,cfg)
 	if err != nil {
 		log.Printf("crash out, shit's fucked: %s\n", err.Error())
 	}
