@@ -12,6 +12,7 @@ import (
 	llama "github.com/go-skynet/go-llama.cpp"
 )
 
+// Simple struct to represent config opts. from file.
 type Config struct {
 	ModelPath  string `json:"model_path"`
 	InitPrompt string `json:"init_prompt"`
@@ -38,6 +39,7 @@ func load_config(cfg *Config) error {
 	return nil
 }
 
+// takes input in basic fashion from terminal.
 func takeInput(history *[]string) error {
 	fmt.Print("msg: ")
 	reader := bufio.NewReader(os.Stdin)
@@ -49,6 +51,7 @@ func takeInput(history *[]string) error {
 	return nil
 }
 
+// takes the history, feeds it in as a prompt, and returns the generated response.
 func genResponse(history *[]string, model *llama.LLama,cfg Config) error {
 	prompt := strings.Join(*history, "\n") + "\n:Assistant:"
 	resp, err := model.Predict(prompt, llama.SetTemperature(0.7), llama.SetTopK(50), llama.SetTokens(cfg.MaxTokens),llama.SetStopWords("User:"))
@@ -61,6 +64,7 @@ func genResponse(history *[]string, model *llama.LLama,cfg Config) error {
 	return nil
 }
 
+// for loop to continuously take input and spit out responses.
 func initConversation(history *[]string, model *llama.LLama,cfg Config) error {
 	println("starting conversation...")
 	for {
@@ -80,6 +84,8 @@ func main() {
 	cfg := Config{
 		ModelPath:  "./models/TinyLLama-1.1B-Chat-v1.0-GGUF/ggml-model-f16.gguf",
 		InitPrompt: "You are a chat bot, intended to answer general queries.",
+		MaxTokens: 200,
+		ModelContextLimit: 2000,
 	}
 
 	err := load_config(&cfg)
