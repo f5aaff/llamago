@@ -3,10 +3,9 @@ package main
 import (
 	"flag"
 	"log"
-	"net"
+
 	llama "github.com/go-skynet/go-llama.cpp"
 )
-
 
 func main() {
 
@@ -36,23 +35,12 @@ func main() {
 			log.Printf("crash out, shit's fucked: %s\n", err.Error())
 			return
 		}
+
 	} else {
-		listener, err := net.Listen("tcp", ":8080")
+		err := StartServer(cfg, model)
 		if err != nil {
 			log.Fatalf("Failed to start server: %v", err)
 			return
-		}
-
-		defer listener.Close()
-		log.Println("server is running on port 8080...")
-
-		for {
-			conn, err := listener.Accept()
-			if err != nil {
-				log.Printf("failed to accept connection: %v", err)
-				continue
-			}
-			go handleConnection(conn, model, *cfg)
 		}
 	}
 }
