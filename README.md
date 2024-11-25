@@ -3,6 +3,15 @@
 basic project, utilizes the go-llama.cpp bindings.
 
 
+#Usage:
+- go-LLM has two modes of interaction, an interactive terminal converstation, or via tcp with JSON requests.
+- the listen server is the default mode, the address and port of which can be modified in the config.
+
+- Flags
+    - -c this is the path to the config.json, the default is './config.json'
+    - --interactive-mode this will start an interactive terminal session.
+
+
 #TODO:
 - ~~TODO: now that it can query a model, a means of persistent conversation with the model.~~
 - TODO: front end needed
