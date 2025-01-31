@@ -32,7 +32,7 @@ func main() {
 	if *interactiveMode {
 		err = initConversation(&history, model, *cfg)
 		if err != nil {
-			log.Printf("crash out, shit's fucked: %s\n", err.Error())
+			log.Printf("error initialising conversation: %s\n", err.Error())
 			return
 		}
 
